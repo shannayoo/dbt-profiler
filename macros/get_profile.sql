@@ -107,6 +107,9 @@
           {% if "std_dev_sample" not in exclude_measures -%}
             {% if dbt_profiler.is_numeric_dtype(data_type) %}stddev_samp({{ adapter.quote(column_name) }}){% else %}cast(null as numeric){% endif %} as std_dev_sample,
           {%- endif %}
+          {% if "sum" not in exclude_measures -%}
+            {% if dbt_profiler.is_numeric_dtype(data_type) %}sum({{ adapter.quote(column_name) }}){% else %}cast(null as numeric){% endif %} as sum,
+          {%- endif %}
           cast(current_timestamp as {{ dbt_profiler.type_string() }}) as profiled_at,
           {{ loop.index }} as _column_position
         from source_data
@@ -149,7 +152,8 @@
   "max",
   "avg",
   "std_dev_population",
-  "std_dev_sample"
+  "std_dev_sample",
+  "sum"
 ] -%}
 
 {%- set include_measures = all_measures | reject("in", exclude_measures) -%}
@@ -235,6 +239,9 @@
           {% if "std_dev_sample" not in exclude_measures -%}
             {% if dbt_profiler.is_numeric_dtype(data_type) %}stddev_samp({{ adapter.quote(column_name) }}){% else %}cast(null as numeric){% endif %} as std_dev_sample,
           {%- endif %}
+          {% if "sum" not in exclude_measures -%}
+            {% if dbt_profiler.is_numeric_dtype(data_type) %}sum({{ adapter.quote(column_name) }}){% else %}cast(null as numeric){% endif %} as sum,
+          {%- endif %}
           cast(current_timestamp as {{ dbt_profiler.type_string() }}) as profiled_at,
           {{ loop.index }} as _column_position
         from source_data
@@ -278,7 +285,8 @@
   "max",
   "avg",
   "std_dev_population",
-  "std_dev_sample"
+  "std_dev_sample",
+  "sum"
 ] -%}
 
 {%- set include_measures = all_measures | reject("in", exclude_measures) -%}
@@ -358,6 +366,9 @@
           {%- endif %}
           {% if "std_dev_sample" not in exclude_measures -%}
             {% if dbt_profiler.is_numeric_dtype(data_type) %}stdevp({{ adapter.quote(column_name) }}){% else %}cast(null as numeric){% endif %} as std_dev_sample,
+          {%- endif %}
+          {% if "sum" not in exclude_measures -%}
+            {% if dbt_profiler.is_numeric_dtype(data_type) %}sum({{ adapter.quote(column_name) }}){% else %}cast(null as numeric){% endif %} as sum,
           {%- endif %}
           cast(current_timestamp as {{ dbt_profiler.type_string() }}) as profiled_at,
           {{ loop.index }} as _column_position
